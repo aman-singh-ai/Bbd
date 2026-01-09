@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBDPaper - Learning Roadmap</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 10px 24px;
+            border: 2px solid var(--border-color);
+            background: transparent;
+            color: var(--text-light);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Roadmap Container */
+        .roadmap-container {
+            display: none;
+        }
+
+        .roadmap-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Roadmap Grid */
+        .roadmap {
+            display: grid;
+            gap: 30px;
+        }
+
+        /* Level Section */
+        .level {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .level-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .level-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .level-badge.beginner {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+        }
+
+        .level-badge.intermediate {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+        }
+
+        .level-badge.advanced {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .level-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .level-description {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        /* Topic Card */
+        .topic-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .topic-card:hover::before {
+            left: 100%;
+        }
+
+        .topic-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.15);
+        }
+
+        .topic-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .topic-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .topic-description {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .topic-resources {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .resource-tag {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Connection Line */
+        .connection-line {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .level-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .level-description {
+                text-align: left;
+                margin-left: 0;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tab-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">BBDPaper</div>
+            <p class="tagline">Your Complete Learning Roadmap</p>
+            <p class="subtitle">Master Coding, Electronics, and AI through structured learning paths</p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="coding">💻 Coding</button>
+            <button class="tab-btn" data-tab="electronics">⚡ Electronics</button>
+            <button class="tab-btn" data-tab="ai">🤖 AI & Machine Learning</button>
+            <button class="tab-btn" data-tab="web">🌐 Web Development</button>
+        </div>
+
+        <!-- CODING ROADMAP -->
+        <div class="roadmap-container active" id="coding">
+            <div class="roadmap">
+                <!-- Beginner -->
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge beginner">1</div>
+                        <div class="level-title">Beginner: Programming Fundamentals</div>
+                        <div class="level-description">2-3 months</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">🔤</div>
+                            <div class="topic-name">Variables & Data Types</div>
+                            <div class="topic-description">Learn int, float, string, boolean and how to declare variables</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Python</span>
+                                <span class="resource-tag">C</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔄</div>
+                            <div class="topic-name">Control Flow</div>
+                            <div class="topic-description">If/else, loops (for, while), switch statements</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Practice</span>
+                                <span class="resource-tag">Hands-on</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📦</div>
+                            <div class="topic-name">Functions & Modularity</div>
+                            <div class="topic-description">Define, call, parameters, return values, scope</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Coding</span>
+                                <span class="resource-tag">Core</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📊</div>
+                            <div class="topic-name">Arrays & Lists</div>
+                            <div class="topic-description">Arrays, indexing, iteration, basic manipulation</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">DSA</span>
+                                <span class="resource-tag">Foundation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connection-line">↓</div>
+
+                <!-- Intermediate -->
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge intermediate">2</div>
+                        <div class="level-title">Intermediate: OOP & DSA</div>
+                        <div class="level-description">3-4 months</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">🏗️</div>
+                            <div class="topic-name">Object-Oriented Programming</div>
+                            <div class="topic-description">Classes, objects, inheritance, polymorphism, encapsulation</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">OOP</span>
+                                <span class="resource-tag">Advanced</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📈</div>
+                            <div class="topic-name">Data Structures</div>
+                            <div class="topic-description">Linked Lists, Stacks, Queues, Trees, Graphs</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">DSA</span>
+                                <span class="resource-tag">Critical</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">⚙️</div>
+                            <div class="topic-name">Algorithm Design</div>
+                            <div class="topic-description">Sorting, searching, complexity analysis, recursion</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Algorithms</span>
+                                <span class="resource-tag">Problem-solving</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔧</div>
+                            <div class="topic-name">File Handling & I/O</div>
+                            <div class="topic-description">Reading/writing files, JSON, CSV handling</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Practical</span>
+                                <span class="resource-tag">I/O</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connection-line">↓</div>
+
+                <!-- Advanced -->
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge advanced">3</div>
+                        <div class="level-title">Advanced: System Design & Projects</div>
+                        <div class="level-description">Ongoing</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">💾</div>
+                            <div class="topic-name">Database Design</div>
+                            <div class="topic-description">SQL, NoSQL, query optimization, relationships</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Database</span>
+                                <span class="resource-tag">Backend</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔐</div>
+                            <div class="topic-name">Security & Best Practices</div>
+                            <div class="topic-description">Authentication, encryption, secure coding</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Security</span>
+                                <span class="resource-tag">Professional</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🚀</div>
+                            <div class="topic-name">Full-Stack Projects</div>
+                            <div class="topic-description">Build complete applications end-to-end</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Portfolio</span>
+                                <span class="resource-tag">Real-world</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🎯</div>
+                            <div class="topic-name">Competitive Programming</div>
+                            <div class="topic-description">Problem solving on platforms like Codeforces, LeetCode</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Competitive</span>
+                                <span class="resource-tag">Interview Prep</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">30+</div>
+                        <div class="stat-label">Topics</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Problems</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">6-12</div>
+                        <div class="stat-label">Months</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ELECTRONICS ROADMAP -->
+        <div class="roadmap-container" id="electronics">
+            <div class="roadmap">
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge beginner">1</div>
+                        <div class="level-title">Beginner: Circuit Fundamentals</div>
+                        <div class="level-description">2-3 months</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">⚡</div>
+                            <div class="topic-name">Basic Electrical Concepts</div>
+                            <div class="topic-description">Voltage, current, resistance, Ohm's law, power</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Theory</span>
+                                <span class="resource-tag">Foundation</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔌</div>
+                            <div class="topic-name">DC Circuit Analysis</div>
+                            <div class="topic-description">Series/parallel circuits, Kirchhoff's laws, resistive networks</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Circuits</span>
+                                <span class="resource-tag">Analysis</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔄</div>
+                            <div class="topic-name">AC Circuit Basics</div>
+                            <div class="topic-description">Sinusoids, phasors, impedance, power factor</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">AC</span>
+                                <span class="resource-tag">Advanced-Beginner</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📡</div>
+                            <div class="topic-name">Components Overview</div>
+                            <div class="topic-description">Resistors, capacitors, inductors, diodes, transistors</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Components</span>
+                                <span class="resource-tag">Practical</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connection-line">↓</div>
+
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge intermediate">2</div>
+                        <div class="level-title">Intermediate: Advanced Circuits & Devices</div>
+                        <div class="level-description">3-4 months</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">🌀</div>
+                            <div class="topic-name">Three-Phase Power Systems</div>
+                            <div class="topic-description">Three-phase circuits, delta-wye connections, power measurement</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Power</span>
+                                <span class="resource-tag">Important</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📊</div>
+                            <div class="topic-name">Resonance & Filters</div>
+                            <div class="topic-description">Series/parallel resonance, Q factor, active filters</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">AC-Analysis</span>
+                                <span class="resource-tag">Critical</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔶</div>
+                            <div class="topic-name">Semiconductor Devices</div>
+                            <div class="topic-description">Diodes, transistors, MOSFETs, thyristors, characteristics</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Devices</span>
+                                <span class="resource-tag">Core</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔌</div>
+                            <div class="topic-name">Digital Electronics Basics</div>
+                            <div class="topic-description">Logic gates, Boolean algebra, combinational circuits</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Digital</span>
+                                <span class="resource-tag">Foundation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connection-line">↓</div>
+
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge advanced">3</div>
+                        <div class="level-title">Advanced: Specialized Systems</div>
+                        <div class="level-description">Ongoing</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">💡</div>
+                            <div class="topic-name">Power Electronics</div>
+                            <div class="topic-description">Converters, regulators, motor control, renewable systems</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Power</span>
+                                <span class="resource-tag">Specialized</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🤖</div>
+                            <div class="topic-name">Microcontrollers & Embedded</div>
+                            <div class="topic-description">Arduino, STM32, programming, real-time systems</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Embedded</span>
+                                <span class="resource-tag">Practical</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📡</div>
+                            <div class="topic-name">Signal Processing</div>
+                            <div class="topic-description">Fourier analysis, filters, DSP, communication systems</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Advanced</span>
+                                <span class="resource-tag">Signals</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔧</div>
+                            <div class="topic-name">IoT & Smart Systems</div>
+                            <div class="topic-description">Sensors, connectivity, cloud integration, automation</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">IoT</span>
+                                <span class="resource-tag">Modern</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">25+</div>
+                        <div class="stat-label">Topics</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Experiments</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">6-12</div>
+                        <div class="stat-label">Months</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI & ML ROADMAP -->
+        <div class="roadmap-container" id="ai">
+            <div class="roadmap">
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge beginner">1</div>
+                        <div class="level-title">Beginner: ML Fundamentals</div>
+                        <div class="level-description">2-3 months</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">📚</div>
+                            <div class="topic-name">AI & ML Basics</div>
+                            <div class="topic-description">Concepts, supervised vs unsupervised, applications</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Theory</span>
+                                <span class="resource-tag">Foundation</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📊</div>
+                            <div class="topic-name">Data Processing</div>
+                            <div class="topic-description">Data cleaning, normalization, feature engineering</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Pandas</span>
+                                <span class="resource-tag">Practical</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📈</div>
+                            <div class="topic-name">Linear & Logistic Regression</div>
+                            <div class="topic-description">Supervised learning fundamentals, cost functions</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Algorithms</span>
+                                <span class="resource-tag">Scikit-learn</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🎯</div>
+                            <div class="topic-name">Evaluation Metrics</div>
+                            <div class="topic-description">Accuracy, precision, recall, F1, confusion matrix</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Evaluation</span>
+                                <span class="resource-tag">Critical</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connection-line">↓</div>
+
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge intermediate">2</div>
+                        <div class="level-title">Intermediate: Deep Learning</div>
+                        <div class="level-description">3-4 months</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">🧠</div>
+                            <div class="topic-name">Neural Networks</div>
+                            <div class="topic-description">Perceptron, backpropagation, activation functions</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Deep Learning</span>
+                                <span class="resource-tag">Core</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🖼️</div>
+                            <div class="topic-name">CNN & Computer Vision</div>
+                            <div class="topic-description">Convolutional networks, image classification, detection</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Vision</span>
+                                <span class="resource-tag">TensorFlow</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📝</div>
+                            <div class="topic-name">RNN & NLP</div>
+                            <div class="topic-description">LSTM, GRU, transformers, language processing</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">NLP</span>
+                                <span class="resource-tag">Advanced</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔧</div>
+                            <div class="topic-name">Frameworks & Tools</div>
+                            <div class="topic-description">TensorFlow, PyTorch, Keras, Hugging Face</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Tools</span>
+                                <span class="resource-tag">Hands-on</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connection-line">↓</div>
+
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge advanced">3</div>
+                        <div class="level-title">Advanced: Specialized AI</div>
+                        <div class="level-description">Ongoing</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">🤖</div>
+                            <div class="topic-name">Generative AI & LLMs</div>
+                            <div class="topic-description">Transformers, GPT models, fine-tuning, prompt engineering</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">LLM</span>
+                                <span class="resource-tag">Cutting-edge</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🎮</div>
+                            <div class="topic-name">Reinforcement Learning</div>
+                            <div class="topic-description">Q-learning, policy gradients, game AI, robotics</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">RL</span>
+                                <span class="resource-tag">Specialized</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📊</div>
+                            <div class="topic-name">MLOps & Deployment</div>
+                            <div class="topic-description">Model serving, containerization, monitoring, CI/CD</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Production</span>
+                                <span class="resource-tag">Professional</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔬</div>
+                            <div class="topic-name">Research & Innovation</div>
+                            <div class="topic-description">Paper implementation, novel approaches, projects</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Research</span>
+                                <span class="resource-tag">Advanced</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">35+</div>
+                        <div class="stat-label">Topics</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">20+</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">8-15</div>
+                        <div class="stat-label">Months</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEB DEVELOPMENT ROADMAP -->
+        <div class="roadmap-container" id="web">
+            <div class="roadmap">
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge beginner">1</div>
+                        <div class="level-title">Beginner: Frontend Basics</div>
+                        <div class="level-description">2-3 months</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">🏗️</div>
+                            <div class="topic-name">HTML & Semantics</div>
+                            <div class="topic-description">Structure, forms, media, accessibility, semantic markup</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Frontend</span>
+                                <span class="resource-tag">Foundation</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🎨</div>
+                            <div class="topic-name">CSS & Styling</div>
+                            <div class="topic-description">Layouts, Flexbox, Grid, responsive design, animations</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Styling</span>
+                                <span class="resource-tag">Visual</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">⚙️</div>
+                            <div class="topic-name">JavaScript Basics</div>
+                            <div class="topic-description">Variables, functions, DOM, events, ES6 fundamentals</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">JS</span>
+                                <span class="resource-tag">Core</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🌐</div>
+                            <div class="topic-name">Version Control & Git</div>
+                            <div class="topic-description">Git commands, GitHub, branching, collaboration</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Tools</span>
+                                <span class="resource-tag">Essential</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connection-line">↓</div>
+
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge intermediate">2</div>
+                        <div class="level-title">Intermediate: Modern Frontend</div>
+                        <div class="level-description">3-4 months</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">⚛️</div>
+                            <div class="topic-name">React.js</div>
+                            <div class="topic-description">Components, hooks, state management, routing</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Framework</span>
+                                <span class="resource-tag">Popular</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔌</div>
+                            <div class="topic-name">APIs & REST</div>
+                            <div class="topic-description">Fetching data, axios, promises, async/await</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Backend Integration</span>
+                                <span class="resource-tag">Critical</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">💾</div>
+                            <div class="topic-name">Backend Basics</div>
+                            <div class="topic-description">Node.js, Express, databases, authentication</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Backend</span>
+                                <span class="resource-tag">Foundation</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">📦</div>
+                            <div class="topic-name">Build Tools & Deployment</div>
+                            <div class="topic-description">npm, Webpack, Vercel, Netlify, CI/CD basics</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">DevOps</span>
+                                <span class="resource-tag">Practical</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connection-line">↓</div>
+
+                <div class="level">
+                    <div class="level-header">
+                        <div class="level-badge advanced">3</div>
+                        <div class="level-title">Advanced: Full-Stack & Production</div>
+                        <div class="level-description">Ongoing</div>
+                    </div>
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="topic-icon">🚀</div>
+                            <div class="topic-name">Advanced React Patterns</div>
+                            <div class="topic-description">Context, Redux, performance optimization, testing</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Advanced</span>
+                                <span class="resource-tag">Pro-level</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🗄️</div>
+                            <div class="topic-name">Database Design & SQL</div>
+                            <div class="topic-description">Relational design, MongoDB, ORMs, optimization</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Database</span>
+                                <span class="resource-tag">Backend</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🔐</div>
+                            <div class="topic-name">Security & Performance</div>
+                            <div class="topic-description">JWT, CORS, SEO, caching, load optimization</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Security</span>
+                                <span class="resource-tag">Professional</span>
+                            </div>
+                        </div>
+                        <div class="topic-card">
+                            <div class="topic-icon">🎯</div>
+                            <div class="topic-name">Complete Web Projects</div>
+                            <div class="topic-description">Build production-grade applications from scratch</div>
+                            <div class="topic-resources">
+                                <span class="resource-tag">Portfolio</span>
+                                <span class="resource-tag">Real-world</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">40+</div>
+                        <div class="stat-label">Topics</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">6-12</div>
+                        <div class="stat-label">Months</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 BBDPaper. Your journey to mastery starts here. 🚀</p>
+    </footer>
+
+    <script>
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab-btn');
+        const containers = document.querySelectorAll('.roadmap-container');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and containers
+                tabs.forEach(t => t.classList.remove('active'));
+                containers.forEach(c => c.classList.remove('active'));
+
+                // Add active class to clicked tab and corresponding container
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Smooth scroll for mobile
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add some interactive feedback
+            document.querySelectorAll('.topic-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transition = 'all 0.3s ease';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
